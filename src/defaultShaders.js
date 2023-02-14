@@ -14,6 +14,7 @@ precision mediump float;
 
 in vec2 uv;
 uniform float uTime;
+uniform vec2 uMouse;
 out vec4 FragColor;
 `;
 

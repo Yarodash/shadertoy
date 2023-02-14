@@ -62,6 +62,4 @@ export function bindTexture(gl, shaderProgram, texture, name, slot) {
   gl.bindTexture(gl.TEXTURE_2D, texture);
   const textureLocation = gl.getUniformLocation(shaderProgram, name);
   textureLocation && gl.uniform1i(textureLocation, slot);
-
-  console.log('bind', texture, name, slot);
 }

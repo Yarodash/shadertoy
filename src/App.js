@@ -67,22 +67,24 @@ function useShaderProgram() {
   return {gl, setgl, fragmentSourceFooter, setFragmentSourceFooter, shaderProgram, textures, setTextures, error};
 }
 
-function draw(gl, shaderProgram, timestamp) {
+function draw(gl, shaderProgram, timestamp, cursor) {
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.cullFace(gl.FRONT_AND_BACK);
 
   gl.uniform1f(gl.getUniformLocation(shaderProgram, 'uTime'), timestamp / 1000);
-
+  gl.uniform2f(gl.getUniformLocation(shaderProgram, 'uMouse'), cursor.x, cursor.y);
+  
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
 }
 
-function drawOnRequestAnimationFrame(glGetter, shaderProgramGetter) {
+function drawOnRequestAnimationFrame(glGetter, shaderProgramGetter, cursorGetter) {
   const step = (timestamp) => {
     const gl = glGetter();
     const shaderProgram = shaderProgramGetter();
+    const cursor = cursorGetter();
 
-    gl && shaderProgram && draw(gl, shaderProgram, timestamp);
+    gl && shaderProgram && draw(gl, shaderProgram, timestamp, cursor);
     window.requestAnimationFrame(step);
   };
   window.requestAnimationFrame(step);
@@ -95,21 +97,24 @@ function createGetterSetter(init) {
   return [get, set];
 }
 
-function useDraw(gl, shaderProgram) {
+function useDraw(gl, shaderProgram, cursor) {
   const [getgl, setgl] = useMemo(() => createGetterSetter(null), []);
   const [getShaderProgram, setShaderProgram] = useMemo(() => createGetterSetter(null), []);
+  const [getCursor, setCursor] = useMemo(() => createGetterSetter(null), []);
 
   useEffect(() => setgl(gl), [gl]);
   useEffect(() => setShaderProgram(shaderProgram), [shaderProgram]);
+  useEffect(() => setCursor(cursor), [cursor]);
 
   useEffect(() => {
-    drawOnRequestAnimationFrame(getgl, getShaderProgram);
+    drawOnRequestAnimationFrame(getgl, getShaderProgram, getCursor);
   }, []);
 }
 
 function App() {
   const {gl, setgl, fragmentSourceFooter, setFragmentSourceFooter, shaderProgram, textures, setTextures, error} = useShaderProgram();
-  useDraw(gl, shaderProgram);
+  const [cursor, setCursor] = useState({x: 0, y: 0});
+  useDraw(gl, shaderProgram, cursor);
 
   useEffect(() => {
     gl && shaderProgram &&
@@ -120,7 +125,7 @@ function App() {
   <div className='app'>
     <div className='canvas-and-shader'>
       <ErrorShow error={error}/>
-      <WebGLCanvas setgl={setgl}/>
+      <WebGLCanvas setgl={setgl} setCursor={setCursor}/>
       <FragmentShaderInput fragment={fragmentSourceFooter} setFragment={setFragmentSourceFooter}/>
     </div>
     <ImageSelectorList gl={gl} textures={textures} setTextures={setTextures}/>
