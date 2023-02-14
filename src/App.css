@@ -1,38 +1,283 @@
-.App {
-  text-align: center;
+:root {
+    --canvas-size: 720px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+    margin: 0;
+    padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+    background-color: #202020;
+    margin: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.app {
+    display: flex;
+    flex-direction: column;
 }
 
-.App-link {
-  color: #61dafb;
+.canvas-and-shader {
+    position: relative;
+    display: flex;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.canvas {
+    flex: 1;
+    padding: 5px;
+    max-height: var(--canvas-size);
+}
+
+.shader {
+    flex: 100;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.update {
+    flex: 1;
+    margin: 5px;
+}
+
+.source {
+    flex: 10;
+    width: calc(100% - 10px);
+    padding: 10px 5px 5px 15px;
+    margin: 5px;
+    box-sizing: border-box;
+    border: #606060 3px solid;
+    border-radius: 10px;
+    background-color: #404040;
+}
+
+.source:focus-within {
+    border: #0066dd 3px solid;
+}
+
+.fragment-input {
+    resize: none;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    font-family: 'Roboto Mono', 'Consolas';
+    font-size: 16px;
+    border: none;
+    background-color: #404040;
+    color: #cccccc;
+    cursor: auto;
+    white-space: nowrap;
+    overflow: auto;
+}
+.fragment-input::-webkit-scrollbar {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+}
+::-webkit-scrollbar-track {
+    border: solid 5px transparent;
+    -webkit-box-shadow: inset 1px -0px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 100px;
+    background-color: #404040;
+    box-sizing: border-box;
+}
+::-webkit-scrollbar-thumb {
+    border: solid 5px transparent;
+    background-clip: content-box;
+    border-radius: 100px;
+    background-color: #606060;
+}
+::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0);
+}
+
+.fragment-input:focus {
+    outline: none;
+}
+.fragment-input:focus::-webkit-scrollbar-thumb {
+    background-color: #0088ff;
+}
+
+.fragment-input::-webkit-scrollbar-thumb:hover {
+    background-color: #0066dd;
+}
+
+.update button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #0088ff;
+    box-shadow: 0px 0px 10px 2px #0088ff88;
+    border-radius: 10px;
+    font-size: 25px;
+    font-family: 'Roboto Mono', 'Consolas';
+}
+
+.update button:hover {
+    background-color: #0066dd;
+    box-shadow: 0px 0px 10px 2px #0066dd88;
+    color: #000000;
+}
+
+.textures {
+    display: flex;
+    flex-direction: row;
+}
+
+canvas {
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.image-selector {
+    width: 300px;
+    height: auto;
+}
+
+.image-settings {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    border-radius: 0 0 15px 15px;
+}
+
+.image-selector-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.new-texture {
+    width: 100px;
+    height: 100px;
+    background: #0088ff;
+    border-radius: 50%;
+    color: white;
+    font-weight: 900;
+    position: relative;
+    cursor: pointer;
+    margin: 15px;
+    transition: all 0.1s ease-in-out;
+    transform: scale(1);
+}
+
+.new-texture:hover {
+    background: #0066dd;
+    transform: scale(1.05);
+}
+
+.image-selector {
+    margin: 5px;
+    text-align: center;
+    background-color: #404040;
+    border-radius: 15px;
+    border: 1px solid #0066dd;
+}
+
+.new-texture::after {
+    content: "";
+    width: 50px;
+    height: 10px;
+    border-radius: 30px;
+    background: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.new-texture::before {
+    content: "";
+    width: 10px;
+    height: 50px;
+    border-radius: 30px;
+    background: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.image-preview {
+    width: auto;
+    height: auto;
+    max-height: 180px;
+    min-height: 180px;
+    max-width: 300px;
+    min-width: 300px;
+}
+
+.image-preview img {
+    width: auto;
+    height: auto;
+    max-height: 170px;
+    max-width: 290px;
+    padding: 5px;
+    border-radius: 15px 15px 0 0;
+    cursor: pointer;
+}
+
+.image-preview img:hover {
+    filter: brightness(0.75);
+}
+
+.default-img {
+    width: 290px;
+    height: 100%;
+    background: #6f6e6e;
+    border-radius: 15px 15px 0 0;
+}
+
+.name-image-input {
+    margin: 4px 2px 7px 5px;
+    padding: 5px;
+    border-radius: 7px;
+    background: #686868;
+    font-weight: 700;
+    font-family: sans-serif;
+    color: white;
+    border: none;
+}
+
+.delete-image-button {
+    margin: 4px 7px 5px 2px;
+    padding: 5px;
+    border-radius: 7px;
+    background: #686868;
+    font-weight: 700;
+    font-family: sans-serif;
+    color: white;
+    border: none;
+    height: fit-content;
+}
+
+.error-detail {
+    position: absolute;
+    margin: 5px;
+    background-color: #00000060;
+    color: #dddddd;
+    font-size: 22px;
+    width: var(--canvas-size);
+    height: var(--canvas-size);
+    border: 0px;
+    border-radius: 9px;
+}
+
+.error-detail textarea {
+    user-select: none;
+    margin: 15px;
+    color: #dddddd;
+    background-color: #00000000;
+    font-size: 22px;
+    width: calc(var(--canvas-size) - 30px);
+    height: calc(var(--canvas-size) - 30px);
+    border: 0px;
+    resize: none;
+    font-family: 'Roboto Mono', 'Consolas';
 }
