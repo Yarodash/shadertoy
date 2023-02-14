@@ -134,6 +134,9 @@ canvas {
     border-radius: 10px;
     box-sizing: border-box;
 }
+canvas:hover {
+    box-shadow: 0px 0px 5px 2px #ffffff55;
+}
 
 .image-selector {
     width: 300px;
@@ -219,7 +222,7 @@ canvas {
     max-height: 170px;
     max-width: 290px;
     padding: 5px;
-    border-radius: 15px 15px 0 0;
+    border-radius: 15px 15px 15px 15px;
     cursor: pointer;
 }
 
@@ -244,6 +247,15 @@ canvas {
     color: white;
     border: none;
 }
+.name-image-input:hover {
+    outline: none;
+    background: #505050;
+}
+.name-image-input:focus {
+    outline: none;
+    background: #505050;
+    color: black;
+}
 
 .delete-image-button {
     margin: 4px 7px 5px 2px;
@@ -255,6 +267,10 @@ canvas {
     color: white;
     border: none;
     height: fit-content;
+}
+.delete-image-button:hover {
+    background: #505050;
+    color: black;
 }
 
 .error-detail {
