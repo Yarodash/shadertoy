@@ -113,8 +113,18 @@ function useDraw(gl, shaderProgram, cursor) {
 
 function App() {
   const {gl, setgl, fragmentSourceFooter, setFragmentSourceFooter, shaderProgram, textures, setTextures, error} = useShaderProgram();
-  const [cursor, setCursor] = useState({x: 0, y: 0});
+  const [cursor, setCursor] = useState({x: 0, y: 0})
   useDraw(gl, shaderProgram, cursor);
+
+  const [theme, setTheme] = useState('dark');
+
+  useEffect(() => {
+    document.body.className = theme + ' theme-change';
+    const timeout = setTimeout(() => {
+      document.body.className = theme
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [theme]);
 
   useEffect(() => {
     gl && shaderProgram &&
@@ -129,6 +139,7 @@ function App() {
       <FragmentShaderInput fragment={fragmentSourceFooter} setFragment={setFragmentSourceFooter}/>
     </div>
     <ImageSelectorList gl={gl} textures={textures} setTextures={setTextures}/>
+    <button onClick={() => setTheme(theme==="light" ?"dark": "light")}>change theme</button>
   </div>);
 }
 

@@ -1,5 +1,34 @@
-:root {
+body {
     --canvas-size: 720px;
+}
+.light {
+    --bg-color: #e0e0e0;
+    --main-color: #0088ff;
+    --main-color-active: #0066dd;
+    --fragment-color: #000000;
+    --bg2-color: #d0d0d0;
+    --bg3-color: #a0a0a0;
+    --bg3-color-active: #b0b0b0;
+    --color: #000000;
+    --color-active: #ffffff;
+}
+.dark {
+    --bg-color: #202020;
+    --main-color: #dd6600;
+    --main-color-active: #bb4400;
+    --fragment-color: #cccccc;
+    --bg2-color: #404040;
+    --bg3-color: #606060;
+    --bg3-color-active: #505050;
+    --color: #ffffff;
+    --color-active: #000000;
+}
+
+.theme-change {
+    transition: all 0.3s ease-in-out;
+}
+.theme-change * {
+    transition: all 0.3s ease-in-out;
 }
 
 * {
@@ -8,7 +37,7 @@
 }
 
 body {
-    background-color: #202020;
+    background-color: var(--bg-color);
     margin: 5px;
 }
 
@@ -46,13 +75,13 @@ body {
     padding: 10px 5px 5px 15px;
     margin: 5px;
     box-sizing: border-box;
-    border: #606060 3px solid;
+    border: var(--bg3-color) 3px solid;
     border-radius: 10px;
-    background-color: #404040;
+    background-color: var(--bg2-color);
 }
 
 .source:focus-within {
-    border: #0066dd 3px solid;
+    border: var(--main-color-active) 3px solid;
 }
 
 .fragment-input {
@@ -63,8 +92,8 @@ body {
     font-family: 'Roboto Mono', 'Consolas';
     font-size: 16px;
     border: none;
-    background-color: #404040;
-    color: #cccccc;
+    background-color: var(--bg2-color);
+    color: var(--fragment-color);
     cursor: auto;
     white-space: nowrap;
     overflow: auto;
@@ -76,53 +105,53 @@ body {
 }
 ::-webkit-scrollbar-track {
     border: solid 5px transparent;
-    -webkit-box-shadow: inset 1px -0px 6px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 1px -0px 6px #00000030;
     border-radius: 100px;
-    background-color: #404040;
+    background-color: var(--bg2-color);
     box-sizing: border-box;
 }
 ::-webkit-scrollbar-thumb {
     border: solid 5px transparent;
     background-clip: content-box;
     border-radius: 100px;
-    background-color: #606060;
+    background-color: var(--bg3-color);
 }
 ::-webkit-scrollbar-corner {
-    background: rgba(0,0,0,0);
+    background: #00000000;
 }
 
 .fragment-input:focus {
     outline: none;
 }
 .fragment-input:focus::-webkit-scrollbar-thumb {
-    background-color: #0088ff;
+    background-color: var(--main-color);
 }
 
 .fragment-input::-webkit-scrollbar-thumb:hover {
-    background-color: #0066dd;
+    background-color: var(--main-color-active);
 }
 
 .update button {
     width: 100%;
     height: 100%;
     border: none;
-    color: white;
+    color: var(--color);
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     cursor: pointer;
-    background-color: #0088ff;
-    box-shadow: 0px 0px 10px 2px #0088ff88;
+    background-color: var(--main-color);
+    /*box-shadow: 0px 0px 10px 2px #0088ff88;*/
     border-radius: 10px;
     font-size: 25px;
     font-family: 'Roboto Mono', 'Consolas';
 }
 
 .update button:hover {
-    background-color: #0066dd;
-    box-shadow: 0px 0px 10px 2px #0066dd88;
-    color: #000000;
+    background-color: var(--main-color-active);
+    /*box-shadow: 0px 0px 10px 2px #0066dd88;*/
+    color: var(--color-active);
 }
 
 .textures {
@@ -135,7 +164,7 @@ canvas {
     box-sizing: border-box;
 }
 canvas:hover {
-    box-shadow: 0px 0px 5px 2px #ffffff55;
+    /*box-shadow: 0px 0px 5px 2px #ffffff55;*/
 }
 
 .image-selector {
@@ -159,28 +188,31 @@ canvas:hover {
 .new-texture {
     width: 100px;
     height: 100px;
-    background: #0088ff;
+    background: var(--main-color);
     border-radius: 50%;
-    color: white;
+    color: var(--color);
     font-weight: 900;
     position: relative;
     cursor: pointer;
     margin: 15px;
-    transition: all 0.1s ease-in-out;
+    transition: all 0.2s ease-in-out;
     transform: scale(1);
 }
 
 .new-texture:hover {
-    background: #0066dd;
+    background: var(--main-color-active);
     transform: scale(1.05);
 }
 
 .image-selector {
     margin: 5px;
     text-align: center;
-    background-color: #404040;
+    background-color: var(--bg2-color);
     border-radius: 15px;
-    border: 1px solid #0066dd;
+    border: 2px solid var(--main-color);
+}
+.image-selector:focus-within {
+    border: 2px solid var(--main-color-active);
 }
 
 .new-texture::after {
@@ -230,47 +262,41 @@ canvas:hover {
     filter: brightness(0.75);
 }
 
-.default-img {
-    width: 290px;
-    height: 100%;
-    background: #6f6e6e;
-    border-radius: 15px 15px 0 0;
-}
-
 .name-image-input {
     margin: 4px 2px 7px 5px;
     padding: 5px;
     border-radius: 7px;
-    background: #686868;
+    background: var(--bg3-color);
     font-weight: 700;
     font-family: sans-serif;
-    color: white;
+    color: var(--color);
     border: none;
 }
 .name-image-input:hover {
     outline: none;
-    background: #505050;
+    background: var(--bg3-color-active);
+    cursor: default;
 }
 .name-image-input:focus {
     outline: none;
-    background: #505050;
-    color: black;
+    background: var(--bg3-color-active);
+    color: var(--color-active);
 }
 
 .delete-image-button {
     margin: 4px 7px 5px 2px;
     padding: 5px;
     border-radius: 7px;
-    background: #686868;
+    background: var(--bg3-color);
     font-weight: 700;
     font-family: sans-serif;
-    color: white;
+    color: var(--color);
     border: none;
     height: fit-content;
 }
 .delete-image-button:hover {
-    background: #505050;
-    color: black;
+    background: var(--bg3-color-active);
+    color: var(--color-active);
 }
 
 .error-detail {
